@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="19A602" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FoodItem" representedClassName="FoodItem" syncable="YES" codeGenerationType="class">
+        <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ImageData" inverseName="item" inverseEntity="ImageData" syncable="YES"/>
+    </entity>
+    <entity name="ImageData" representedClassName="ImageData" syncable="YES" codeGenerationType="class">
+        <attribute name="data1" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="data2" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FoodItem" inverseName="image" inverseEntity="FoodItem" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="FoodItem" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="ImageData" positionX="271.14453125" positionY="1.69921875" width="128" height="88"/>
+    </elements>
 </model>
