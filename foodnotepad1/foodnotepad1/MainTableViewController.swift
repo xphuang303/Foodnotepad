@@ -9,21 +9,19 @@
 import UIKit
 import CoreData
 
-class MainTableViewController: UITableViewController, UIImagePickerControllerDelegate {
+class MainTableViewController: UITableViewController {
 
     var allItems:[FoodItem] = [FoodItem]()
-    var allImages:[ImageData] = [ImageData]()
     var detailViewController:DetailViewController?
     //var activityIndicator:UIActivityIndicatorView?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "美食迹"
         //从CoreData 数据表装入数据
-        let (items,images) = self.loadDataFromCoreDataStore()
+        let items = self.loadDataFromCoreDataStore()
         //若有数据装入，则显示
         if items != nil{
             self.allItems = items!
-            self.allImages = images!
             self.tableView.reloadData()
         }
 
@@ -58,12 +56,12 @@ class MainTableViewController: UITableViewController, UIImagePickerControllerDel
         cell.detailTextLabel?.text = self.allItems[indexPath.row].store
         
         //let imgdata:ImageData = self.allImages[(indexPath as NSIndexPath).row]
-        let imgdata:ImageData = self.allItems[indexPath.row].image!
+        let imgdata = self.allItems[(indexPath as NSIndexPath).row].image1
         
         //resize the image to width=30,height=30
         let sacleSize:CGSize = CGSize(width:30,height:30)
         UIGraphicsBeginImageContextWithOptions(sacleSize,false,0.0)
-        let img:UIImage = UIImage(data: imgdata.data1! as Data)!
+        let img:UIImage = UIImage(data: imgdata! as Data)!
         img.draw(in: CGRect(x: 0,y: 0,width: sacleSize.width,height: sacleSize.height))
         let resizeImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -74,15 +72,14 @@ class MainTableViewController: UITableViewController, UIImagePickerControllerDel
     }
     
 
-    func loadDataFromCoreDataStore() -> ([FoodItem]?,[ImageData]?) {
+    func loadDataFromCoreDataStore() -> [FoodItem]? {
         var items:[FoodItem]?
-        var imageData = [ImageData]()
         let context:NSManagedObjectContext = self.getContext()
         let request:NSFetchRequest<FoodItem> = FoodItem.fetchRequest()
         //无条件查询  predicate表示查询条件
         request.predicate = NSPredicate(value: true)
         //查询后按电话升序排序   ascending: true表示升序
-        let sortDescriptor:NSSortDescriptor = NSSortDescriptor(key: "number", ascending: true)
+        let sortDescriptor:NSSortDescriptor = NSSortDescriptor(key: "telephone", ascending: true)
         request.sortDescriptors = [sortDescriptor]
         
         var error:NSError?
@@ -96,33 +93,71 @@ class MainTableViewController: UITableViewController, UIImagePickerControllerDel
                 print("No results returned:\(error.debugDescription)")
                 items = nil
             }
-            else{
-                for item in items!{
-                    //把每一个item的image加到imageData数组里
-                    imageData.append(item.image!)
-                }
-            }
         }catch let error1 as NSError{
             error = error1
             items = nil
             print("Error = \(String(describing: error?.description))")
         }
-        return (items,imageData)
+        return items
+    }
+    
+    func operateDataInCoreDataStore(indexPath:Int, newItem:FoodItem) {
+        var items:[FoodItem]?
+        let context:NSManagedObjectContext = self.getContext()
+        let request:NSFetchRequest<FoodItem> = FoodItem.fetchRequest()
+        request.predicate = NSPredicate(value: true)
+        
+        var error:NSError?
+        do{
+            items = try context.fetch(request)
+            items![indexPath] = newItem
+            
+        }catch let error1 as NSError{
+            error = error1
+            items = nil
+            print("Error = \(String(describing: error?.description))")
+        }
+        
     }
     
     func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
-    
+    /*
+    func getDocumentDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    */
     //UnwindSegue
-    @IBAction func SaveAcyion(sender:UIStoryboardSegue){
+    @IBAction func SaveAction(sender:UIStoryboardSegue){
         let vc = sender.source as! DetailViewController
         let indexPath:IndexPath? = self.tableView.indexPathForSelectedRow
-        self.allItems[(indexPath! as NSIndexPath).row].name = vc.nameField.text
-        self.allItems[(indexPath! as NSIndexPath).row].number = vc.numberField.text
-        self.allItems[(indexPath! as NSIndexPath).row].store = vc.storeField.text
-        //self.allItems[(indexPath! as NSIndexPath).row].image?.data1 = UIImagePNGRepresentaion(vc.foodphoto.image)
+        if indexPath != nil {
+            let i = (indexPath! as NSIndexPath).row
+            self.allItems[i].name = vc.nameField.text
+            self.allItems[i].telephone = vc.telephoneField.text
+            self.allItems[i].store = vc.storeField.text
+            self.allItems[i].comment = vc.commentField.text
+            self.allItems[i].image1 = vc.foodphoto.image!.jpegData(compressionQuality: 0.8)
+            operateDataInCoreDataStore(indexPath: i, newItem: self.allItems[i])
+        }
+        else {
+            //let newFoodItem:FoodItem?
+            
+            
+            vc.foodItem?.name = vc.nameField.text
+            vc.foodItem?.telephone = vc.telephoneField.text
+            vc.foodItem?.store = vc.storeField.text
+            vc.foodItem?.comment = vc.commentField.text
+            vc.foodItem?.image1 = vc.foodphoto.image!.jpegData(compressionQuality: 0.8)
+            //allItems.append(newFoodItem!)
+            
+            self.allItems.append(vc.foodItem!)
+            operateDataInCoreDataStore(indexPath: allItems.count-1, newItem: self.allItems[allItems.count-1])
+        }
+        
         self.dismiss(animated: true){
             
         }
@@ -176,8 +211,18 @@ class MainTableViewController: UITableViewController, UIImagePickerControllerDel
         // Pass the selected object to the new view controller.
         self.detailViewController = segue.destination as? DetailViewController
         let indexPath:IndexPath? = self.tableView.indexPathForSelectedRow
-        detailViewController?.foodItem = self.allItems[(indexPath! as NSIndexPath).row]
-        detailViewController?.imageData = self.allItems[(indexPath! as NSIndexPath).row].image
+        if indexPath != nil {
+            detailViewController?.foodItem = self.allItems[(indexPath! as NSIndexPath).row]
+        }
+        else {
+            //添加新的一项
+            //var newFoodItem:FoodItem?
+            //newFoodItem?.name = "无"
+            //allItems.append(newFoodItem!)
+            //detailViewController?.foodItem = self.allItems[allItems.count]
+            
+        }
+        
     }
     
 

@@ -11,25 +11,31 @@ import UIKit
 class DetailViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     @IBOutlet weak var nameField: UITextField!
-    @IBOutlet weak var numberField: UITextField!
+    @IBOutlet weak var telephoneField: UITextField!
     @IBOutlet weak var storeField: UITextField!
+    @IBOutlet weak var commentField: UITextField!
     
     @IBOutlet weak var foodphoto: UIImageView!
     var foodItem:FoodItem?
-    var imageData:ImageData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = foodItem?.name
-        configuenameField()
-        configuenumberField()
-        configuestoreField()
-        if imageData?.data1 != nil{
-            foodphoto.image = UIImage(data: imageData!.data1!)
+        if foodItem?.name == nil{
+            self.title = "添加食物"
         }
-        else if imageData?.data2 != nil{
-            foodphoto.image = UIImage(data: imageData!.data2!)
+        else{
+            self.title = foodItem?.name
+        }
+        configuenameField()
+        configuetelephoneField()
+        configuestoreField()
+        configuecommentField()
+        if foodItem?.image1 != nil{
+            foodphoto.image = UIImage(data: foodItem!.image1!)
+        }
+        else if foodItem?.image2 != nil{
+            foodphoto.image = UIImage(data: foodItem!.image2!)
         }
         else {
             foodphoto.image = UIImage(named: "Nophoto")
@@ -85,13 +91,13 @@ class DetailViewController: UIViewController, UITextFieldDelegate, UINavigationC
         nameField.returnKeyType = .done
         nameField.clearButtonMode = .never
     }
-    func configuenumberField() {
-        if foodItem?.number != nil{
-            numberField.text = foodItem?.number
+    func configuetelephoneField() {
+        if foodItem?.telephone != nil{
+            telephoneField.text = foodItem?.telephone
         }
-        numberField.autocorrectionType = .yes
-        numberField.returnKeyType = .done
-        numberField.clearButtonMode = .never
+        telephoneField.autocorrectionType = .yes
+        telephoneField.returnKeyType = .done
+        telephoneField.clearButtonMode = .never
     }
     func configuestoreField() {
         if foodItem?.store != nil{
@@ -101,7 +107,14 @@ class DetailViewController: UIViewController, UITextFieldDelegate, UINavigationC
         storeField.returnKeyType = .done
         storeField.clearButtonMode = .never
     }
-    
+    func configuecommentField() {
+        if foodItem?.comment != nil{
+            commentField.text = foodItem?.comment
+        }
+        commentField.autocorrectionType = .yes
+        commentField.returnKeyType = .done
+        commentField.clearButtonMode = .never
+    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

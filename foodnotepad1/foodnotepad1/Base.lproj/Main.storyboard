@@ -52,7 +52,7 @@
                     <navigationItem key="navigationItem" id="twF-fX-szf">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="0Xn-MF-qYH">
                             <connections>
-                                <segue destination="RGn-yc-V8r" kind="presentation" id="DzI-B4-EZS"/>
+                                <segue destination="fVV-GF-n9H" kind="presentation" id="BiF-T9-p5C"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -106,8 +106,8 @@
                                 <rect key="frame" x="217" y="585" width="182" height="49"/>
                                 <color key="backgroundColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="182" id="H78-d3-X3t"/>
-                                    <constraint firstAttribute="height" constant="49" id="gYG-zb-CUF"/>
+                                    <constraint firstAttribute="width" constant="182" id="gPD-q5-zph"/>
+                                    <constraint firstAttribute="height" constant="49" id="vE9-Ye-5Uz"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="挑选视频/照片"/>
@@ -130,6 +130,10 @@
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Auh-5Z-JvQ">
                                 <rect key="frame" x="15" y="585" width="182" height="49"/>
                                 <color key="backgroundColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="49" id="8yN-bL-Kv1"/>
+                                    <constraint firstAttribute="width" constant="182" id="xSJ-Tb-zuM"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="拍摄视频/照片"/>
                                 <connections>
@@ -165,10 +169,10 @@
                             <constraint firstItem="Qg8-Ai-qp0" firstAttribute="bottom" secondItem="tpJ-tZ-cR3" secondAttribute="bottom" constant="30" id="avj-pa-55C"/>
                             <constraint firstItem="JWP-we-RIr" firstAttribute="top" secondItem="rKI-aa-n3W" secondAttribute="bottom" constant="20" id="baQ-TZ-9L4"/>
                             <constraint firstItem="Qg8-Ai-qp0" firstAttribute="trailing" secondItem="tpJ-tZ-cR3" secondAttribute="trailing" constant="15" id="eMB-1b-qYH"/>
-                            <constraint firstItem="Qg8-Ai-qp0" firstAttribute="trailing" secondItem="ako-za-VpA" secondAttribute="trailing" constant="15" id="hXZ-c5-DQn"/>
                             <constraint firstItem="Qg8-Ai-qp0" firstAttribute="trailing" secondItem="JWP-we-RIr" secondAttribute="trailing" constant="100" id="j8R-dY-iML"/>
                             <constraint firstItem="JWP-we-RIr" firstAttribute="leading" secondItem="Qg8-Ai-qp0" secondAttribute="leading" constant="4" id="pdy-cv-yqf"/>
                             <constraint firstItem="aOb-RL-v5A" firstAttribute="leading" secondItem="Qg8-Ai-qp0" secondAttribute="leading" constant="4" id="vuW-Re-mVl"/>
+                            <constraint firstItem="Qg8-Ai-qp0" firstAttribute="trailing" secondItem="ako-za-VpA" secondAttribute="trailing" constant="15" id="wD0-TR-VJL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Qg8-Ai-qp0"/>
                     </view>
@@ -180,45 +184,46 @@
                         <rightBarButtonItems>
                             <barButtonItem title="存储" id="XPw-Sv-p23">
                                 <connections>
-                                    <segue destination="wIL-v8-Pps" kind="unwind" unwindAction="SaveAcyionWithSender:" id="5ie-E6-AOq"/>
+                                    <segue destination="wIL-v8-Pps" kind="unwind" unwindAction="SaveActionWithSender:" id="CGa-eM-l7P"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="取消" id="cEp-w2-6HK">
                                 <connections>
-                                    <segue destination="wIL-v8-Pps" kind="unwind" unwindAction="SaveAcyionWithSender:" id="Z4y-wO-x8N"/>
+                                    <segue destination="wIL-v8-Pps" kind="unwind" unwindAction="CancelActionWithSender:" id="BhU-6w-3nZ"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="commentField" destination="tpJ-tZ-cR3" id="teR-pZ-vsW"/>
                         <outlet property="foodphoto" destination="UpG-9c-niA" id="uKC-In-Ekt"/>
                         <outlet property="nameField" destination="rKI-aa-n3W" id="r8A-jP-COL"/>
-                        <outlet property="numberField" destination="JWP-we-RIr" id="mDX-AL-r91"/>
                         <outlet property="storeField" destination="aOb-RL-v5A" id="TXl-ti-3WB"/>
+                        <outlet property="telephoneField" destination="JWP-we-RIr" id="zWY-JC-TU7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jI9-3Q-AvQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="wIL-v8-Pps" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3843.4782608695655" y="23.4375"/>
+            <point key="canvasLocation" x="3477" y="23"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="Bc4-zY-U7P">
+        <scene sceneID="XrE-Ng-L6O">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RGn-yc-V8r" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fVV-GF-n9H" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4JT-V7-IoO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="U38-dI-ecE">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="4pU-LI-gG9" kind="relationship" relationship="rootViewController" id="blM-IG-wjE"/>
+                        <segue destination="4pU-LI-gG9" kind="relationship" relationship="rootViewController" id="52i-yu-GsI"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ROR-Ga-jUl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fpf-gv-8Z9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2933.3333333333335" y="23.4375"/>
+            <point key="canvasLocation" x="2413" y="23"/>
         </scene>
     </scenes>
 </document>
